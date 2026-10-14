@@ -1,0 +1,57 @@
+{
+  "projectFingerprint": {
+    "vercel.json": "44ede9f810591c6e2d483ee4c554bc350b48569856f3e28f34246d5e355ebf8e"
+  },
+  "baselineSha256": {
+    "api/admin/doctors-status.js": "7b607e130f1979ee607623b4a26537bdc5f4229133511fd0d83c1f513626e962",
+    "api/admin/doctors.js": "36575b2f71696b8f7ae2851846b9e1d1fca1210d9f8d2aca94fa4cc18bbe77e7",
+    "api/admin/invite.js": "817195413b9f3e1998fb43f8fca01aede9bb0cdc22a052d278adc28167a7490a",
+    "api/auth/login.js": "98085e97e24370a4be359b4ff46714606906bc51a6fb61b2b0d0768f85e8b875",
+    "api/auth/logout.js": "02260b37a3b453ad072ba48195c38b78418c5df1649d6b1ef91cd08cb3dfbf25",
+    "api/auth/me.js": "783a6418402fd90ecfadcee08501e0cdaafc9ef067371d1f81e176d654b231dd",
+    "api/data.js": "6bcf964d81beb7b61e63cd9a3eced17b7f635eb3504c106bc628d48bc5f1dda6",
+    "api/health.js": "9d3ca2092e022a5ea8a283a8e12f7d35b93277f5cf4c82b6bde42bce8bf41fbf",
+    "api/module/[id].js": "5dd42f1e1c91c2db7b09bdabfc09cc2199013aa490582a581be9d2af17debbf5",
+    "api/whatsapp/webhook.js": "9afe7ef63f572cae4eb55269a59953f0087c1e10aff35e7ab70b1891982c478b",
+    "api/_lib/db.js": "14561cf3d1fcff857317cc292c025d7f2b77a15ebbec0a236c816dabe04dd7db",
+    "api/_lib/password.js": "f5c44691ca75744674f3ebf37ee78b3a68e28b7f794172b382b6a9a4260c7285",
+    "api/_lib/session.js": "bca22a4af71dabfffc033d662d0422f3a3ea44d1e9964d98804b0bccd43d2411",
+    "api/_lib/whatsapp.js": "2d13e74c45931df4784cb2aa143e45d957f75f4bc0a3a72e2d047182d5ddb0ef"
+  },
+  "routeMap": {
+    "api/admin/doctors-status.js": "server/api/routes/admin/doctors-status.js",
+    "api/admin/doctors.js": "server/api/routes/admin/doctors.js",
+    "api/admin/invite.js": "server/api/routes/admin/invite.js",
+    "api/auth/login.js": "server/api/routes/auth/login.js",
+    "api/auth/logout.js": "server/api/routes/auth/logout.js",
+    "api/auth/me.js": "server/api/routes/auth/me.js",
+    "api/data.js": "server/api/routes/data.js",
+    "api/health.js": "server/api/routes/health.js",
+    "api/module/[id].js": "server/api/routes/module/[id].js",
+    "api/whatsapp/webhook.js": "server/api/routes/whatsapp/webhook.js"
+  },
+  "helpers": [
+    "api/_lib/db.js",
+    "api/_lib/password.js",
+    "api/_lib/session.js",
+    "api/_lib/whatsapp.js"
+  ],
+  "expectedApiFiles": [
+    "api/_lib/db.js",
+    "api/_lib/password.js",
+    "api/_lib/session.js",
+    "api/_lib/whatsapp.js",
+    "api/admin/doctors-status.js",
+    "api/admin/doctors.js",
+    "api/admin/invite.js",
+    "api/auth/login.js",
+    "api/auth/logout.js",
+    "api/auth/me.js",
+    "api/data.js",
+    "api/health.js",
+    "api/module/[id].js",
+    "api/whatsapp/webhook.js"
+  ],
+  "expectedApiJsBefore": 14,
+  "expectedApiJsAfter": 1
+}

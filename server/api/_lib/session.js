@@ -33,10 +33,12 @@ export function readSession(req) {
   return data;
 }
 export function setSessionCookie(res, token) {
-  res.setHeader('Set-Cookie', `${COOKIE}=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=28800`);
+  const secure = process.env.NODE_ENV === 'production' ? '; Secure' : '';
+  res.setHeader('Set-Cookie', `${COOKIE}=${token}; Path=/; HttpOnly${secure}; SameSite=Lax; Max-Age=28800`);
 }
 export function clearSessionCookie(res) {
-  res.setHeader('Set-Cookie', `${COOKIE}=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0`);
+  const secure = process.env.NODE_ENV === 'production' ? '; Secure' : '';
+  res.setHeader('Set-Cookie', `${COOKIE}=; Path=/; HttpOnly${secure}; SameSite=Lax; Max-Age=0`);
 }
 export function requireSession(req,res,role) {
   const session=readSession(req);

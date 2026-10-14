@@ -1,0 +1,3 @@
+MedNeo Vercel Hobby Function Limit Fix - V3
+Dynamic source-aware installer; preserves custom package.json and vercel.json settings.
+Single API function entry point: api/index.js plus Vercel rewrite.

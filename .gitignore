@@ -6,3 +6,6 @@
 # Local private snapshots may contain personal data and password hashes.
 backups/
 private-backups/
+
+.vercel
+.env*

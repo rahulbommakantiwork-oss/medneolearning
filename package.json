@@ -6,6 +6,9 @@
   "engines": {
     "node": ">=20"
   },
+  "dependencies": {
+    "@supabase/server": "^1.8.0"
+  },
   "scripts": {
     "check": "node scripts/check-project.mjs",
     "seed": "node scripts/seed.mjs",

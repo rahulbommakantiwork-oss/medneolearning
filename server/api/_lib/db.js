@@ -126,3 +126,27 @@ export async function update(
     }
   );
 }
+
+export async function selectAll(table, query = '', options = {}) {
+  const pageSize = Math.max(100, Math.min(1000, Number(options.pageSize) || 1000));
+  const maxRows = Math.max(pageSize, Math.min(50000, Number(options.maxRows) || 20000));
+  const base = String(query || '').replace(/(^|&)limit=[^&]*/g, '').replace(/(^|&)offset=[^&]*/g, '').replace(/^&+|&+$/g, '');
+  const results = [];
+  for (let offset = 0; offset < maxRows; offset += pageSize) {
+    const suffix = `${base ? `${base}&` : ''}limit=${pageSize}&offset=${offset}`;
+    const page = await select(table, suffix);
+    if (!Array.isArray(page) || page.length === 0) break;
+    results.push(...page);
+    if (page.length < pageSize) break;
+  }
+  return results;
+}
+
+
+export async function remove(table, query = '') {
+  const suffix = query ? `?${query}` : '';
+  return supabaseFetch(`/rest/v1/${table}${suffix}`, {
+    method: 'DELETE',
+    headers: { Prefer: 'return=minimal' },
+  });
+}
