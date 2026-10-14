@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MedNeo Learning — Doctor Dashboard</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/doctor.css">
+  <style>
+    /* ── Alembic G icon SVG ── */
+    .gl-g-svg { width: 32px; height: 32px; }
+
+    /* ── recent activity ── */
+    .recent-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: background var(--transition-fast);
+    }
+    .recent-item:hover { background: var(--color-bg); }
+    .recent-item-icon {
+      width: 38px; height: 38px;
+      border-radius: var(--radius-md);
+      background: var(--Alembic-red-muted);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; flex-shrink: 0;
+    }
+    .recent-item-body { flex: 1; min-width: 0; }
+    .recent-item-title { font-size: 0.87rem; font-weight: 600; color: var(--text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .recent-item-meta  { font-size: 0.75rem; color: var(--text-muted); }
+
+    /* ── page header logos ── */
+    .header-logos {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      margin-left: auto;
+    }
+
+    /* ── module tab scroll on small screens ── */
+    .module-tabs-scroll { overflow-x: auto; padding-bottom: 4px; }
+
+    /* ── dashboard grid ── */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: var(--space-xl);
+      margin-top: var(--space-xl);
+    }
+
+    @media (max-width: 900px) {
+      .dashboard-grid { grid-template-columns: 1fr; }
+      .article-layout { grid-template-columns: 1fr; }
+      .article-sidebar { display: none; }
+    }
+  </style>
+
+  <style id="medneo-doctor-premium-layout">
+    html,body{min-height:100%;max-width:100%;overflow-x:hidden}
+    .app-wrapper{min-height:100dvh;overflow-x:clip}
+    .main-area{min-width:0;max-width:100%;overflow-x:clip}
+    .page-content{width:100%;max-width:1560px;margin-inline:auto;padding:clamp(16px,2.25vw,34px);box-sizing:border-box}
+    .page-heading{margin-bottom:clamp(16px,2vw,28px)}
+    .page-title{letter-spacing:-.035em}
+    .card,.stat-card,.module-hero,.streak-card{box-shadow:0 8px 28px rgba(25,40,60,.045);border-color:rgba(26,43,64,.09)}
+    .card,.stat-card{min-width:0}
+    .dashboard-grid{grid-template-columns:minmax(0,1fr) minmax(240px,300px);gap:clamp(14px,1.8vw,24px)}
+    .brand-logo{display:flex;align-items:center;justify-content:center;min-width:46px}
+    .medneo-brand-monogram{display:grid;place-items:center;width:42px;height:42px;border-radius:13px;background:#d7193f;color:#fff;font:700 27px/1 Georgia,serif;box-shadow:0 5px 14px rgba(215,25,63,.17)}
+    .sidebar-brand .brand-name{font-weight:760;letter-spacing:-.025em}
+    .sidebar-brand .brand-sub{font-size:.68rem;letter-spacing:.025em}
+    .medneo-wordmark{display:inline-flex;align-items:center;gap:0;padding:8px 11px;border:1px solid rgba(215,25,63,.17);border-radius:10px;background:#fff;color:#253247;font-size:.8rem;font-weight:750;letter-spacing:.04em}
+    .medneo-wordmark span{color:#d7193f}
+    .header-search{min-width:0;max-width:420px}
+    .header-search input{max-width:100%;min-width:0}
+    .data-table-wrap{max-width:100%;overflow:auto;overscroll-behavior-inline:contain}
+    .modal-overlay{padding:clamp(8px,1.5vw,20px);overflow:hidden}
+    #presentationModal .presentation-modal{width:min(1500px,calc(100vw - 28px));height:min(94dvh,1000px);max-width:calc(100vw - 28px);max-height:94dvh;display:flex;flex-direction:column;overflow:hidden;border-radius:16px}
+    #presentationModal .modal-header{gap:12px;align-items:center;padding:12px 16px;min-width:0}
+    #presentationModal .modal-title{min-width:0;overflow-wrap:anywhere}
+    #presentationModal .presentation-toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 14px;border-bottom:1px solid var(--color-border);flex:0 0 auto}
+    #presentationModal .presentation-read-progress{font-size:.76rem;color:var(--text-muted);padding:7px 14px;line-height:1.45;flex:0 0 auto}
+    #presentationFrameWrap{position:relative;flex:1 1 auto;min-height:0;height:auto;overflow:hidden;background:#eef2f6;isolation:isolate}
+    #presentationFrame{display:block;position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff}
+    #presentationModal .modal-fullscreen{width:calc(100vw - 24px);max-width:calc(100vw - 24px);height:calc(100dvh - 24px);max-height:calc(100dvh - 24px);border-radius:12px}
+    #presentationMarkRead,#presentationDownload{min-height:40px;display:inline-flex;align-items:center;justify-content:center;gap:7px;border-radius:10px;font-weight:650}
+    #presentationMarkRead{padding:9px 14px}
+    #presentationDownload{padding:9px 14px;text-decoration:none}
+    #presentationMarkRead:focus-visible,#presentationDownload:focus-visible{outline:3px solid rgba(0,119,181,.38);outline-offset:2px}
+    @media(max-width:900px){.dashboard-grid{grid-template-columns:minmax(0,1fr)}.header-search{max-width:45vw}}
+    @media(max-width:640px){.page-content{padding:13px}.module-hero-inner{grid-template-columns:minmax(0,1fr);padding:18px}.module-hero-illustration{display:none}.module-tabs{max-width:100%;width:100%}.module-tabs-scroll{max-width:100%}.dashboard-grid{gap:14px}.header-search{display:none}#presentationModal .presentation-modal{width:calc(100vw - 12px);max-width:calc(100vw - 12px);height:calc(100dvh - 12px);max-height:calc(100dvh - 12px);border-radius:10px}#presentationModal .modal-header{padding:10px 12px}#presentationModal .presentation-toolbar{padding:8px;gap:6px}#presentationModal .presentation-toolbar .btn{flex:1 1 auto;min-width:110px}#presentationModal .presentation-read-progress{padding:6px 9px;font-size:.7rem}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+  </style>
+
+  <link rel="stylesheet" href="css/medneo-refined.css">
+</head>
+<body>
+
+<!-- ============================================================
+     SIDEBAR
+     ============================================================ -->
+<div class="app-wrapper">
+<aside class="sidebar" id="sidebar">
+  <!-- Brand -->
+  <div class="sidebar-brand">
+    <div class="brand-logo">
+      <span class="medneo-brand-monogram" aria-hidden="true">M</span>
+    </div>
+    <div class="brand-text">
+      <div class="brand-name">MedNeo Learning</div>
+      <div class="brand-sub">Medical education</div>
+    </div>
+  </div>
+
+  <!-- User -->
+  <div class="sidebar-user">
+    <div class="user-avatar" id="sidebarAvatar">DR</div>
+    <div class="user-info">
+      <div class="user-name" id="sidebarUserName">Dr. Name</div>
+      <div class="user-spec" id="sidebarUserSpec">Specialization</div>
+    </div>
+  </div>
+
+  <!-- Nav -->
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Learning</div>
+    <div class="nav-item active" data-section="dashboard">
+      <div class="nav-icon">⊞</div>
+      <span class="nav-label">Dashboard</span>
+    </div>
+    <div class="nav-item" data-section="modules">
+      <div class="nav-icon">📚</div>
+      <span class="nav-label">Modules</span>
+      <span class="nav-badge">3</span>
+    </div>
+    <div class="nav-item" data-section="progress">
+      <div class="nav-icon">📊</div>
+      <span class="nav-label">Progress</span>
+    </div>
+    <div class="nav-section-label">Account</div>
+    <div class="nav-item" data-section="profile">
+      <div class="nav-icon">👤</div>
+      <span class="nav-label">Profile</span>
+    </div>
+    <div class="nav-item" id="logoutBtn">
+      <div class="nav-icon">↩</div>
+      <span class="nav-label">Sign Out</span>
+    </div>
+  </nav>
+
+  <!-- Footer: Partner Logos -->
+  <div class="sidebar-footer">
+    <div class="partner-logos">
+      <div class="partner-pill">
+        <div class="partner-dot-medneo"></div>
+        MEDNEO
+      </div>
+      <!-- <div class="partner-pill">
+        <div class="partner-dot-bad"></div>
+        BAD
+      </div> -->
+    </div>
+  </div>
+</aside>
+
+<!-- ============================================================
+     MAIN AREA
+     ============================================================ -->
+<div class="main-area" id="mainArea">
+
+  <!-- Header -->
+  <header class="app-header" id="appHeader">
+    <button class="header-toggle" id="sidebarToggle" title="Toggle sidebar">☰</button>
+    <div class="header-search">
+      <span class="search-icon">🔍</span>
+      <input type="text" placeholder="Search modules, articles…">
+    </div>
+    <div class="header-logos">
+      <!-- Alembic logo in header -->
+      <!-- <div style="display:flex;align-items:center;gap:6px;padding:4px 10px;border:1px solid var(--color-border);border-radius:var(--radius-sm);background:var(--color-bg)">
+        <svg width="18" height="18" viewBox="0 0 100 100"><text x="50" y="80" text-anchor="middle" font-family="Georgia,serif" font-size="90" font-weight="700" fill="#E31837">G</text></svg>
+        <span style="font-family:var(--font-display);font-size:0.82rem;font-weight:700;color:var(--Alembic-red)">Alembic</span>
+      </div> -->
+      <img class="alembic-header-logo" src="./img/alembic-logo.png" alt="Alembic" />
+      <!-- MEDNEO badge -->
+      <div class="partner-badge medneo">
+        <span class="medneo-wordmark" aria-label="MedNeo Learning">MedNeo <span>LEARNING</span></span>
+      </div>
+      <!-- BAD badge -->
+      <!-- <div class="partner-badge bad">
+        <div style="width:16px;height:16px;background:#1B2A5E;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:6px;color:white;font-weight:700;flex-shrink:0">BAD</div>
+        BAD
+      </div>
+    </div> -->
+    <div class="header-right">
+      <div class="header-btn" title="Notifications">
+        🔔
+        <div class="header-notif-dot"></div>
+      </div>
+      <div class="header-avatar" id="headerAvatar">DR</div>
+    </div>
+  </header>
+
+  <!-- Page Content -->
+  <main class="page-content">
+
+    <!-- ══════════════════════════════════
+         SECTION: DASHBOARD
+         ══════════════════════════════════ -->
+    <section class="section active" id="sec-dashboard">
+      <div class="page-heading">
+        <h1 class="page-title" id="welcomeName">Good Morning, Doctor</h1>
+        <p class="page-subtitle" id="currentDate">Today's date</p>
+      </div>
+
+      <!-- Stat Grid -->
+      <div class="stat-grid stagger-children">
+        <div class="stat-card">
+          <div class="stat-icon">📚</div>
+          <div class="stat-value" id="statModules">0</div>
+          <div class="stat-label">Modules Assigned</div>
+          <div class="stat-change neutral">Published learning modules</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">✅</div>
+          <div class="stat-value" id="statCompleted">0</div>
+          <div class="stat-label">Completed</div>
+          <div class="stat-change neutral">Keep going!</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🎯</div>
+          <div class="stat-value" id="statScore">0</div>
+          <div class="stat-label">Avg Score %</div>
+          <div class="stat-change up">↑ Good progress</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🔥</div>
+          <div class="stat-value" id="statStreak">0</div>
+          <div class="stat-label">Day Streak</div>
+          <div class="stat-change up">↑ Keep it up!</div>
+        </div>
+      </div>
+
+      <!-- Dashboard Grid -->
+      <div class="dashboard-grid">
+        <!-- Recent Activity -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Your learning resources</span>
+            <button class="btn btn-sm btn-ghost" onclick="document.querySelector('[data-section=modules]').click()">View All →</button>
+          </div>
+          <div class="card-body" id="recentActivity" style="padding-top:0">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Right panel -->
+        <div style="display:flex;flex-direction:column;gap:var(--space-md)">
+          <!-- Streak -->
+          <div class="streak-card">
+            <div class="streak-value" id="streakVal">0</div>
+            <div class="streak-label">Day Learning Streak</div>
+          </div>
+
+          <!-- Publisher info -->
+          <div class="card">
+            <div class="card-body">
+              <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:var(--space-md)">Partners</div>
+              <div style="display:flex;flex-direction:column;gap:var(--space-sm)">
+                <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--color-bg);border-radius:var(--radius-md)">
+                  <!-- <div style="width:32px;height:32px;background:#1B2A5E;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.55rem;color:white;font-weight:700;flex-shrink:0">BAD</div>
+                  <div>
+                    <div style="font-size:0.8rem;font-weight:700;color:#1B2A5E">British Association of Dermatologists</div>
+                    <div style="font-size:0.7rem;color:var(--text-muted)">Content Publisher</div>
+                  </div>
+                </div> -->
+                <!-- <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--color-bg);border-radius:var(--radius-md)">
+                  <div style="width:32px;height:22px;background:#D62B2B;border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                    <span style="font-size:9px;color:white;font-weight:700">M</span>
+                  </div> -->
+                  <!-- <div>
+                    <div style="font-size:0.8rem;font-weight:700;color:#D62B2B"><span style="color:#D62B2B">MED</span><span style="color:#333">NEO</span></div>
+                    <div style="font-size:0.7rem;color:var(--text-muted)">Platform Service</div>
+                  </div> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════
+         SECTION: MODULES
+         ══════════════════════════════════ -->
+    <section class="section" id="sec-modules">
+      <div class="page-heading">
+        <h1 class="page-title">Learning Modules</h1>
+        <p class="page-subtitle">BAD-certified dermatology education — structured for clinical practice</p>
+      </div>
+
+      <!-- Module Tabs -->
+      <div class="module-tabs-scroll">
+        <div class="module-tabs" id="moduleTabs">
+          <div class="module-tab active" data-module="m1">
+            <span class="module-tab-icon">🩺</span>
+            <span class="module-tab-label">Module 1</span>
+            <span class="module-tab-badge">Active</span>
+          </div>
+          <div class="module-tab" data-module="m2" role="button" tabindex="0" aria-label="Open Module 2">
+            <span class="module-tab-icon">💊</span>
+            <span class="module-tab-label">Module 2</span>
+            <span class="module-tab-badge">Active</span>
+          </div>
+          <div class="module-tab" data-module="m3" role="button" tabindex="0" aria-label="Open Module 3">
+            <span class="module-tab-icon">🔬</span>
+            <span class="module-tab-label">Module 3</span>
+            <span class="module-tab-badge">Active</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Module Content Area (Module 1 content or Coming Soon) -->
+      <div id="moduleContentArea" class="animate-fade">
+        <!-- Populated by JS -->
+      </div>
+
+    </section>
+
+    <!-- ══════════════════════════════════
+         SECTION: PROGRESS
+         ══════════════════════════════════ -->
+    <section class="section" id="sec-progress">
+      <div class="page-heading">
+        <h1 class="page-title">My Progress</h1>
+        <p class="page-subtitle">Track your learning journey across all modules</p>
+      </div>
+      <div id="progressContent">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════
+         SECTION: PROFILE
+         ══════════════════════════════════ -->
+    <section class="section" id="sec-profile">
+      <div class="page-heading">
+        <h1 class="page-title">My Profile</h1>
+        <p class="page-subtitle">Manage your account details and preferences</p>
+      </div>
+      <div style="max-width:560px">
+        <div class="card">
+          <div class="card-header"><span class="card-title">Personal Details</span></div>
+          <div class="card-body">
+            <div class="form-group" style="margin-bottom:var(--space-lg)">
+              <label class="form-label">Full Name</label>
+              <input class="form-input" id="pName" type="text" style="width:100%;height:44px;background:var(--color-bg);border:1.5px solid var(--color-border);border-radius:var(--radius-md);padding:0 var(--space-md);font-size:0.92rem;color:var(--text-primary);outline:none">
+            </div>
+            <div class="form-group" style="margin-bottom:var(--space-lg)">
+              <label class="form-label">Email</label>
+              <input class="form-input" id="pEmail" type="email" style="width:100%;height:44px;background:var(--color-bg);border:1.5px solid var(--color-border);border-radius:var(--radius-md);padding:0 var(--space-md);font-size:0.92rem;color:var(--text-primary);outline:none" readonly>
+            </div>
+            <div class="form-group" style="margin-bottom:var(--space-lg)">
+              <label class="form-label">Registered mobile number</label>
+              <input class="form-input" id="pPhone" type="tel" readonly aria-describedby="phoneLoginNote" autocomplete="tel" inputmode="tel" placeholder="+91 98765 43210" style="width:100%;height:44px;background:var(--color-bg);border:1.5px solid var(--color-border);border-radius:var(--radius-md);padding:0 var(--space-md);font-size:0.92rem;color:var(--text-primary);outline:none" required>
+              <small id="phoneLoginNote" style="display:block;margin-top:5px;color:var(--text-muted)">This number is used for OTP sign-in. To change it, contact an administrator for verification.</small>
+            </div>
+            <div class="form-group" style="margin-bottom:var(--space-lg)">
+              <label class="form-label">Medical degree</label>
+              <input class="form-input" id="pDegree" type="text" placeholder="MBBS, MD, DNB…" style="width:100%;height:44px;background:var(--color-bg);border:1.5px solid var(--color-border);border-radius:var(--radius-md);padding:0 var(--space-md);font-size:0.92rem;color:var(--text-primary);outline:none">
+            </div>
+            <div class="form-group" style="margin-bottom:var(--space-lg)">
+              <label class="form-label">Specialization</label>
+              <input class="form-input" id="pSpec" type="text" style="width:100%;height:44px;background:var(--color-bg);border:1.5px solid var(--color-border);border-radius:var(--radius-md);padding:0 var(--space-md);font-size:0.92rem;color:var(--text-primary);outline:none">
+            </div>
+            <div class="form-group" style="margin-bottom:var(--space-lg)">
+              <label class="form-label">Hospital / clinic</label>
+              <input class="form-input" id="pHospital" type="text" placeholder="Hospital or clinic (optional)" style="width:100%;height:44px;background:var(--color-bg);border:1.5px solid var(--color-border);border-radius:var(--radius-md);padding:0 var(--space-md);font-size:0.92rem;color:var(--text-primary);outline:none">
+            </div>
+            <div class="form-group" style="margin-bottom:var(--space-lg)">
+              <label class="form-label">Medical registration number</label>
+              <input class="form-input" id="pRegistrationNumber" type="text" placeholder="Optional" style="width:100%;height:44px;background:var(--color-bg);border:1.5px solid var(--color-border);border-radius:var(--radius-md);padding:0 var(--space-md);font-size:0.92rem;color:var(--text-primary);outline:none">
+            </div>
+            <div class="form-group" style="margin-bottom:var(--space-lg)">
+              <label class="form-label">Experience</label>
+              <input class="form-input" id="pExperience" type="text" placeholder="e.g. 8 years" style="width:100%;height:44px;background:var(--color-bg);border:1.5px solid var(--color-border);border-radius:var(--radius-md);padding:0 var(--space-md);font-size:0.92rem;color:var(--text-primary);outline:none">
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-md)">
+              <div>
+                <label class="form-label">State</label>
+                <select id="pState" style="width:100%;height:44px;background:var(--color-bg);border:1.5px solid var(--color-border);border-radius:var(--radius-md);padding:0 var(--space-md);font-size:0.87rem;color:var(--text-primary);outline:none">
+                  <option value="">Select State</option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label">City</label>
+                <select id="pCity" style="width:100%;height:44px;background:var(--color-bg);border:1.5px solid var(--color-border);border-radius:var(--radius-md);padding:0 var(--space-md);font-size:0.87rem;color:var(--text-primary);outline:none">
+                  <option value="">Select City</option>
+                </select>
+              </div>
+            </div>
+            <div style="margin-top:var(--space-xl)">
+              <button class="btn btn-primary" id="saveProfileBtn" onclick="saveDoctorProfile()">Save Changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div><!-- /main-area -->
+</div><!-- /app-wrapper -->
+
+<!-- ============================================================
+     MODALS
+     ============================================================ -->
+
+<!-- Slide Deck Modal -->
+<div class="modal-overlay" id="slideModal">
+  <div class="modal" style="max-width:820px;max-height:92vh">
+    <div class="modal-header">
+      <span class="modal-title" id="slideModalTitle">Slide Deck</span>
+      <div style="display:flex;align-items:center;gap:var(--space-sm)">
+        <button class="btn btn-sm btn-ghost" onclick="expandSlideView()">⛶ Full Screen</button>
+        <div class="modal-close" onclick="closeModal('slideModal')">✕</div>
+      </div>
+    </div>
+    <div class="modal-body" id="slideModalBody" style="padding:var(--space-lg)">
+      <!-- Slide viewer injected here -->
+    </div>
+  </div>
+</div>
+
+<!-- Article Modal -->
+<div class="modal-overlay" id="articleModal">
+  <div class="modal" style="max-width:900px;max-height:92vh">
+    <div class="modal-header">
+      <span class="modal-title" id="articleModalTitle">Article</span>
+      <div style="display:flex;align-items:center;gap:var(--space-sm)">
+        <button class="btn btn-sm btn-ghost" onclick="expandArticle()">⛶ Full Screen</button>
+        <div class="modal-close" onclick="closeModal('articleModal')">✕</div>
+      </div>
+    </div>
+    <div class="modal-body" id="articleModalBody">
+      <!-- Article content injected here -->
+    </div>
+  </div>
+</div>
+
+<!-- MCQ Modal -->
+<div class="modal-overlay" id="mcqModal">
+  <div class="modal" style="max-width:740px;max-height:92vh">
+    <div class="modal-header">
+      <div>
+        <span class="modal-title" id="mcqModalTitle">Assessment</span>
+        <div id="mcqModalSubTitle" style="font-size:0.73rem;color:var(--text-muted);margin-top:2px">Assessment</div>
+      </div>
+      <div class="modal-close" onclick="closeModal('mcqModal')">✕</div>
+    </div>
+    <div class="modal-body" id="mcqModalBody">
+      <!-- MCQ content injected here -->
+    </div>
+  </div>
+</div>
+
+
+<!-- Responsive in-app PDF reader. The canvas renderer is inserted into frameWrap by doctor.js. -->
+<div class="modal-overlay" id="presentationModal" role="dialog" aria-modal="true" aria-labelledby="presentationModalTitle">
+  <div class="modal presentation-modal">
+    <div class="modal-header">
+      <div style="min-width:0;flex:1">
+        <div class="modal-title" id="presentationModalTitle">Module PDF</div>
+        <div id="presentationStatus" role="status" aria-live="polite" style="font-size:.75rem;color:var(--text-muted);margin-top:3px">Preparing secure PDF…</div>
+      </div>
+      <button type="button" class="modal-close" onclick="closePresentationViewer()" aria-label="Close reader">✕</button>
+    </div>
+    <div class="presentation-toolbar">
+      <a id="presentationDownload" class="btn btn-outline" href="#" download hidden>↓ Download PDF</a>
+      <button type="button" id="presentationMarkRead" class="btn btn-primary" onclick="markPresentationAsRead()" disabled>✓ Mark as read</button>
+      <button type="button" class="btn btn-ghost" onclick="expandPresentationView()" aria-label="Toggle full screen">⛶ Full screen</button>
+    </div>
+    <div id="presentationReadProgress" class="presentation-read-progress">Reading time and page progress will be recorded automatically.</div>
+    <div id="presentationFrameWrap"><iframe id="presentationFrame" title="PDF fallback viewer" src="about:blank" allowfullscreen referrerpolicy="same-origin"></iframe></div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div id="toastContainer"></div>
+
+<script src="js/data.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/doctor.js"></script>
+
+<style>
+  /* Inline form-label & form-input needed in profile section */
+  .form-label { display:block; font-size:0.82rem; font-weight:600; color:var(--text-secondary); margin-bottom:6px; }
+  .form-group  { margin-bottom:var(--space-lg); }
+  .form-input  { width:100%; }
+</style>
+</body>
+</html>

@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Alembic MedLearn — Sign In</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <style>
+    body { min-height: 100vh; display: flex; flex-direction: column; }
+
+    .auth-page {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+    }
+
+    /* LEFT PANEL */
+    .auth-left {
+      background: linear-gradient(160deg, #0F1721 0%, #1A0509 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: var(--space-3xl);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .auth-left::before {
+      content: '';
+      position: absolute;
+      top: -100px; right: -100px;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(227,24,55,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .auth-left::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: -60px;
+      width: 350px; height: 350px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(227,24,55,0.10) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Alembic SVG Logo inline */
+    .auth-Alembic-logo {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      position: relative;
+      z-index: 1;
+    }
+
+    .Alembic-g {
+      width: 52px;
+      height: 52px;
+      flex-shrink: 0;
+    }
+
+    .auth-brand-text .brand-name {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--Alembic-red);
+      line-height: 1;
+    }
+
+    .auth-brand-text .brand-tagline {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.4);
+      margin-top: 3px;
+      letter-spacing: 0.05em;
+    }
+
+    .auth-hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .auth-hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(227,24,55,0.15);
+      border: 1px solid rgba(227,24,55,0.25);
+      border-radius: var(--radius-full);
+      padding: 5px 14px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: rgba(255, 100, 120, 1);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: var(--space-lg);
+    }
+
+    .auth-hero-title {
+      font-family: var(--font-display);
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: white;
+      line-height: 1.15;
+      margin-bottom: var(--space-lg);
+    }
+
+    .auth-hero-title span {
+      color: var(--Alembic-red);
+    }
+
+    .auth-hero-text {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.8;
+      max-width: 360px;
+      margin-bottom: var(--space-2xl);
+    }
+
+    .auth-hero-stats {
+      display: flex;
+      gap: var(--space-2xl);
+    }
+
+    .hero-stat { }
+    .hero-stat-value {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: white;
+    }
+    .hero-stat-label {
+      font-size: 0.73rem;
+      color: rgba(255,255,255,0.4);
+      margin-top: 2px;
+    }
+
+    .auth-left-footer {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      position: relative;
+      z-index: 1;
+    }
+
+    .auth-partner-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: var(--radius-sm);
+      padding: 6px 12px;
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.5);
+      font-weight: 600;
+    }
+
+    /* RIGHT PANEL */
+    .auth-right {
+      background: var(--color-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-3xl) var(--space-2xl);
+    }
+
+    .auth-form-wrap {
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .auth-form-heading {
+      margin-bottom: var(--space-2xl);
+    }
+
+    .auth-form-title {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+
+    .auth-form-sub {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .form-group {
+      margin-bottom: var(--space-lg);
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+
+    .form-input {
+      width: 100%;
+      height: 48px;
+      background: var(--color-surface);
+      border: 1.5px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 0 var(--space-md);
+      font-size: 0.92rem;
+      color: var(--text-primary);
+      outline: none;
+      transition: all var(--transition-fast);
+    }
+
+    .form-input:focus {
+      border-color: var(--Alembic-red);
+      box-shadow: 0 0 0 3px rgba(227,24,55,0.08);
+    }
+
+    .form-input::placeholder { color: var(--text-light); }
+
+    .form-error {
+      background: var(--Alembic-red-pale);
+      border: 1px solid rgba(227,24,55,0.2);
+      border-radius: var(--radius-sm);
+      padding: 10px var(--space-md);
+      font-size: 0.82rem;
+      color: var(--Alembic-red-dark);
+      display: none;
+      margin-bottom: var(--space-md);
+    }
+
+    .login-btn {
+      width: 100%;
+      height: 52px;
+      background: var(--Alembic-red);
+      color: white;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      letter-spacing: 0.02em;
+    }
+
+    .login-btn:hover { background: var(--Alembic-red-dark); transform: translateY(-1px); box-shadow: var(--shadow-red); }
+    .login-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+    .auth-demo-creds {
+      margin-top: var(--space-xl);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+    }
+
+    .demo-creds-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: var(--space-sm);
+    }
+
+    .demo-cred-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 0;
+      font-size: 0.82rem;
+    }
+
+    .demo-cred-role { color: var(--text-secondary); font-weight: 600; }
+    .demo-cred-val { font-family: var(--font-mono); color: var(--text-muted); font-size: 0.78rem; }
+
+    .demo-fill-btn {
+      background: none;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: 3px 8px;
+      font-size: 0.72rem;
+      cursor: pointer;
+      color: var(--Alembic-red);
+      font-weight: 600;
+      transition: all var(--transition-fast);
+    }
+
+    .demo-fill-btn:hover { background: var(--Alembic-red-pale); }
+
+    /* Alembic SVG */
+    .Alembic-svg-g {
+      fill: var(--Alembic-red);
+    }
+
+    @media (max-width: 768px) {
+      .auth-page { grid-template-columns: 1fr; }
+      .auth-left { display: none; }
+      .auth-right { padding: var(--space-xl) var(--space-lg); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="auth-page">
+  <!-- LEFT: Brand Panel -->
+  <div class="auth-left">
+    <div class="auth-Alembic-logo">
+      <!-- Alembic G icon as inline SVG -->
+      <svg class="Alembic-g" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="48" fill="#E31837" opacity="0.15"/>
+        <text x="50" y="68" text-anchor="middle" font-family="Georgia,serif" font-size="72" font-weight="700" fill="#E31837">G</text>
+      </svg>
+      <div class="auth-brand-text">
+        <div class="brand-name">Alembic</div>
+        <div class="brand-tagline">A new way for a new world</div>
+      </div>
+    </div>
+
+    <div class="auth-hero-content">
+      <div class="auth-hero-eyebrow">
+        <span>●</span> BAD Certified Medical Education
+      </div>
+      <h1 class="auth-hero-title">
+        Clinical Learning<br>
+        <span>Reimagined</span><br>
+        for Doctors
+      </h1>
+      <p class="auth-hero-text">
+        Evidence-based dermatology education developed in partnership with the British Association of Dermatologists. Structured modules, interactive assessments, and real clinical insights.
+      </p>
+      <div class="auth-hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-value">3</div>
+          <div class="hero-stat-label">Modules</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value">4.5</div>
+          <div class="hero-stat-label">CME Credits</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value">BAD</div>
+          <div class="hero-stat-label">Certified</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="auth-left-footer">
+      <div class="auth-partner-badge">
+        <div style="width:16px;height:12px;background:#D62B2B;border-radius:2px;display:flex;align-items:center;justify-content:center">
+          <span style="font-size:7px;color:white;font-weight:700">M</span>
+        </div>
+        Service by MEDNEO
+      </div>
+      <div class="auth-partner-badge">
+        <div style="width:16px;height:16px;background:#1B2A5E;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:7px;color:white;font-weight:700">BAD</div>
+        Published by BAD
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Form Panel -->
+  <div class="auth-right">
+    <div class="auth-form-wrap">
+      <div class="accessibility-tools" aria-label="Accessibility preferences">
+        <span class="accessibility-label">Display</span>
+        <button type="button" class="accessibility-btn" id="fontSmallerBtn" aria-label="Decrease text size">A−</button>
+        <button type="button" class="accessibility-btn" id="fontLargerBtn" aria-label="Increase text size">A+</button>
+        <button type="button" class="accessibility-btn" id="contrastToggleBtn" aria-pressed="false">Contrast</button>
+        <button type="button" class="accessibility-btn" id="soundToggleBtn" aria-pressed="false">Sound off</button>
+      </div>
+      <div class="auth-form-heading">
+        <h2 class="auth-form-title">Welcome back</h2>
+        <p class="auth-form-sub">Sign in to continue your learning journey</p>
+      </div>
+
+      <div class="login-role-tabs" role="tablist" aria-label="Choose login type">
+        <button class="login-role-tab active" type="button" data-login-role="doctor" role="tab" aria-selected="true">Doctor login</button>
+        <button class="login-role-tab" type="button" data-login-role="admin" role="tab" aria-selected="false">Admin login</button>
+      </div>
+
+      <div class="form-error" id="loginError" role="alert" aria-live="polite"></div>
+
+      <section id="doctorLoginPanel" aria-labelledby="doctorLoginTitle">
+        <h3 id="doctorLoginTitle" class="login-panel-title">Sign in with email and password</h3>
+        <p class="login-panel-copy">Sign in with the email address and password you chose for your MedNeo account.</p>
+        <form id="doctorPasswordForm" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="doctorLoginEmail">Email address</label>
+            <input class="form-input" type="email" id="doctorLoginEmail" autocomplete="username" placeholder="doctor@hospital.com" maxlength="254" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="doctorLoginPassword">Password</label>
+            <div class="auth-password-wrap">
+              <input class="form-input" type="password" id="doctorLoginPassword" autocomplete="current-password" placeholder="Enter your password" required>
+              <button type="button" class="password-toggle" data-password-toggle="doctorLoginPassword" aria-label="Show password">Show</button>
+            </div>
+          </div>
+          <button class="login-btn" type="submit" id="doctorPasswordLoginBtn"><span class="btn-text">Sign in securely</span></button>
+          <p class="field-help" style="margin-top:12px;text-align:right"><a href="reset-password.html" style="color:var(--Alembic-red);font-weight:600;text-decoration:none">Forgot password?</a></p>
+        </form>
+        <p class="register-helper">New to the programme? <button class="text-link" type="button" data-show-register>Create your account</button></p>
+      </section>
+
+      <section id="adminLoginPanel" hidden aria-labelledby="adminLoginTitle">
+        <h3 id="adminLoginTitle" class="login-panel-title">Administrator access</h3>
+        <p class="login-panel-copy">Use your secure administrator credentials to view doctors, content and live analytics.</p>
+        <form id="loginForm" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="email">Admin email address</label>
+            <input class="form-input" type="email" id="email" placeholder="admin@yourdomain.com" autocomplete="username" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="password">Password</label>
+            <div class="auth-password-wrap">
+              <input class="form-input" type="password" id="password" placeholder="Enter admin password" autocomplete="current-password" required>
+              <button id="togglePass" class="password-toggle" type="button" aria-label="Show password">Show</button>
+            </div>
+          </div>
+          <button class="login-btn" type="submit" id="loginBtn"><span class="btn-text">Sign in as admin</span></button>
+          <p class="field-help" style="margin-top:12px;text-align:right"><a href="reset-password.html" style="color:var(--Alembic-red);font-weight:600;text-decoration:none">Forgot password?</a></p>
+        </form>
+      </section>
+
+      <section id="doctorRegisterPanel" class="register-panel" hidden aria-labelledby="registerTitle">
+        <button type="button" class="back-link" data-show-login="doctor">← Back to sign in</button>
+        <div class="auth-form-heading">
+          <h2 class="auth-form-title" id="registerTitle">Create your doctor account</h2>
+          <p class="auth-form-sub">Create your account in one step. No SMS codes or OTP required.</p>
+        </div>
+        <div class="registration-progress" aria-label="Registration progress"><span class="step-dot active"></span><span class="registration-progress-label" id="registerProgressLabel">One quick step · Your details</span></div>
+        <div id="registrationError" class="form-error" role="alert" aria-live="polite"></div>
+        <form id="doctorRegisterForm" novalidate>
+          <div class="register-form-grid">
+            <div class="form-group register-span-2">
+              <label class="form-label" for="regName">Full name <span aria-hidden="true">*</span></label>
+              <input class="form-input" id="regName" name="name" type="text" autocomplete="name" maxlength="160" placeholder="Dr. Full Name" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="regEmail">Email address <span aria-hidden="true">*</span></label>
+              <input class="form-input" id="regEmail" name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@hospital.com" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="regPhone">Mobile number <span aria-hidden="true">*</span></label>
+              <input class="form-input" id="regPhone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+91 98765 43210" required aria-describedby="regPhoneHelp">
+              <small class="field-help" id="regPhoneHelp">Used for programme communication and account support.</small>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="regCity">City <span aria-hidden="true">*</span></label>
+              <input class="form-input" id="regCity" name="city" type="text" autocomplete="address-level2" maxlength="100" placeholder="Mumbai" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="regState">State / Union Territory <span aria-hidden="true">*</span></label>
+              <select class="form-input register-select" id="regState" name="state" autocomplete="address-level1" required>
+                <option value="" selected disabled>Select state / UT</option>
+                <option>Andhra Pradesh</option><option>Arunachal Pradesh</option><option>Assam</option><option>Bihar</option><option>Chhattisgarh</option><option>Goa</option><option>Gujarat</option><option>Haryana</option><option>Himachal Pradesh</option><option>Jharkhand</option><option>Karnataka</option><option>Kerala</option><option>Madhya Pradesh</option><option>Maharashtra</option><option>Manipur</option><option>Meghalaya</option><option>Mizoram</option><option>Nagaland</option><option>Odisha</option><option>Punjab</option><option>Rajasthan</option><option>Sikkim</option><option>Tamil Nadu</option><option>Telangana</option><option>Tripura</option><option>Uttar Pradesh</option><option>Uttarakhand</option><option>West Bengal</option>
+                <option>Andaman and Nicobar Islands</option><option>Chandigarh</option><option>Dadra and Nagar Haveli and Daman and Diu</option><option>Delhi</option><option>Jammu and Kashmir</option><option>Ladakh</option><option>Lakshadweep</option><option>Puducherry</option><option>Other</option>
+              </select>
+            </div>
+            <div class="form-group register-span-2" id="regStateOtherWrap" hidden>
+              <label class="form-label" for="regStateOther">Enter state / region <span aria-hidden="true">*</span></label>
+              <input class="form-input" id="regStateOther" type="text" maxlength="100" placeholder="Enter your state or region">
+            </div>
+            <div class="form-group register-span-2">
+              <label class="form-label" for="regDegree">Medical degree <span aria-hidden="true">*</span></label>
+              <select class="form-input register-select" id="regDegree" name="degree" required>
+                <option value="" selected disabled>Select your highest medical / professional degree</option>
+                <option>MBBS</option><option>MD — Dermatology / DVL</option><option>MD — General Medicine</option><option>MD — Other specialty</option>
+                <option>DNB — Dermatology</option><option>DNB — Other specialty</option><option>DM</option><option>MCh</option><option>MS</option>
+                <option>DDVL</option><option>DVD</option><option>DDV</option><option>MRCP</option><option>FRCP</option><option>MBChB</option>
+                <option>BDS</option><option>MDS</option><option>BAMS</option><option>MD — Ayurveda</option><option>BHMS</option><option>MD — Homoeopathy</option>
+                <option>BNYS</option><option>BUMS</option><option>BSMS</option><option>PharmD</option><option>PhD</option><option>Other</option>
+              </select>
+            </div>
+            <div class="form-group register-span-2" id="regDegreeOtherWrap" hidden>
+              <label class="form-label" for="regDegreeOther">Enter your degree <span aria-hidden="true">*</span></label>
+              <input class="form-input" id="regDegreeOther" type="text" maxlength="120" placeholder="Enter full degree name">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="regPassword">Create password <span aria-hidden="true">*</span></label>
+              <div class="auth-password-wrap">
+                <input class="form-input" id="regPassword" name="password" type="password" autocomplete="new-password" minlength="10" maxlength="128" placeholder="At least 10 characters" required aria-describedby="passwordStrengthText">
+                <button type="button" class="password-toggle" data-password-toggle="regPassword" aria-label="Show password">Show</button>
+              </div>
+              <div class="password-strength" aria-hidden="true"><span id="passwordStrengthBar"></span></div>
+              <small class="field-help" id="passwordStrengthText">Use 10+ characters with at least one letter and one number.</small>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="regConfirmPassword">Confirm password <span aria-hidden="true">*</span></label>
+              <div class="auth-password-wrap">
+                <input class="form-input" id="regConfirmPassword" name="confirmPassword" type="password" autocomplete="new-password" minlength="10" maxlength="128" placeholder="Type it again" required aria-describedby="passwordMatchText">
+                <button type="button" class="password-toggle" data-password-toggle="regConfirmPassword" aria-label="Show password">Show</button>
+              </div>
+              <small class="field-help" id="passwordMatchText" aria-live="polite">Enter the same password twice.</small>
+            </div>
+          </div>
+          <label class="register-checkbox"><input id="regWelcomeEmail" type="checkbox"><span>Email me a welcome confirmation after registration <small>Optional. We never email your password.</small></span></label>
+          <label class="register-checkbox register-consent"><input id="regConsent" type="checkbox" required><span>I confirm that my details are accurate and consent to learning activity being recorded for programme administration and progress tracking. <b>*</b></span></label>
+          <button class="login-btn" type="submit" id="registerStartBtn"><span class="btn-text">Create account securely</span></button>
+          <p class="register-privacy-note">Your password is protected with a salted, server-generated hash. Administrators cannot view the password you chose.</p>
+        </form>
+</section>
+    </div>
+  </div>
+</div>
+
+<div id="toastContainer" aria-live="polite"></div>
+
+<script src="js/data.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/registration.js"></script>
+</body>
+</html>

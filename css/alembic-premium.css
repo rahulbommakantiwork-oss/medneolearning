@@ -1,0 +1,291 @@
+/*
+  MedNeo Learning · Alembic-inspired premium interface layer
+  Loaded after each page's existing CSS so all current components inherit the same system.
+  Palette sampled from the supplied Alembic logo: blue #006EB6, green #00A24D.
+*/
+:root {
+  --alembic-blue: #006EB6;
+  --alembic-blue-deep: #06466F;
+  --alembic-blue-dark: #063653;
+  --alembic-blue-pale: #EAF5FC;
+  --alembic-blue-soft: #F3F9FD;
+  --alembic-green: #00A24D;
+  --alembic-green-dark: #007F3D;
+  --alembic-green-pale: #E9F7EF;
+  --Alembic-red: var(--alembic-blue);
+  --Alembic-red-dark: #00568F;
+  --Alembic-red-light: #1687CA;
+  --Alembic-red-pale: var(--alembic-blue-pale);
+  --Alembic-red-muted: rgba(0,110,182,.08);
+  --color-bg: #F5F8FB;
+  --color-surface: #FFFFFF;
+  --color-surface-2: #F2F6F9;
+  --color-border: #DFE8EE;
+  --color-border-light: #ECF1F4;
+  --text-primary: #132B3A;
+  --text-secondary: #4E6472;
+  --text-muted: #788D9A;
+  --text-light: #A6B5BF;
+  --color-success: var(--alembic-green);
+  --color-info: var(--alembic-blue);
+  --color-error: #C94C4C;
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, sans-serif;
+  --font-display: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, sans-serif;
+  --shadow-xs: 0 1px 2px rgba(8,40,62,.035);
+  --shadow-sm: 0 3px 10px rgba(8,40,62,.055);
+  --shadow-md: 0 8px 24px rgba(8,40,62,.075);
+  --shadow-lg: 0 18px 48px rgba(8,40,62,.12);
+  --shadow-red: 0 5px 18px rgba(0,110,182,.18);
+  --radius-sm: 9px;
+  --radius-md: 13px;
+  --radius-lg: 18px;
+  --radius-xl: 22px;
+  --transition-fast: .16s cubic-bezier(.2,.75,.25,1);
+  --transition-base: .24s cubic-bezier(.2,.75,.25,1);
+  --transition-slow: .38s cubic-bezier(.2,.75,.25,1);
+}
+
+html { scroll-behavior: smooth; scrollbar-gutter: stable; }
+body { background: var(--color-bg); color: var(--text-primary); font-family: var(--font-body); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+body, input, select, textarea, button { font-family: var(--font-body); }
+img { max-width: 100%; }
+button, a, input, select, textarea, summary, [role="button"], [tabindex]:not([tabindex="-1"]) { -webkit-tap-highlight-color: transparent; }
+:where(button, a, input, select, textarea, [role="button"], [tabindex]):focus-visible { outline: 3px solid rgba(0,110,182,.34); outline-offset: 3px; }
+
+/* Shared buttons and interactive affordances */
+:where(.btn, .btn-primary, .btn-outline, .btn-ghost, .btn-sm, .tab-btn, .nav-item, .module-tab, .content-card, .mcq-option, .slide-btn, .header-btn, .header-toggle, .accessibility-btn, .toggle-pass, .login-btn, .back-link, .page-btn, #presentationMarkRead, #presentationDownload) {
+  transition: color var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast), opacity var(--transition-fast);
+}
+:where(button, .btn, .btn-primary, .login-btn, .tab-btn, .nav-item, .module-tab, .content-card, .mcq-option, .header-btn, .header-toggle, .accessibility-btn, .page-btn) { touch-action: manipulation; }
+:where(.btn, .btn-primary, .login-btn, #presentationMarkRead) { border-radius: 11px !important; font-weight: 650 !important; letter-spacing: -.01em; }
+:where(.btn-primary, .login-btn, .btn.btn-primary, .auth-form .btn-primary) {
+  background: var(--alembic-blue) !important; background-image: none !important; border: 1px solid var(--alembic-blue) !important; color: #fff !important; box-shadow: 0 4px 12px rgba(0,110,182,.16) !important;
+}
+:where(.btn-primary, .login-btn, .btn.btn-primary, .auth-form .btn-primary):hover { background: #005B98 !important; border-color: #005B98 !important; box-shadow: 0 7px 18px rgba(0,110,182,.2) !important; transform: translateY(-1px); }
+:where(.btn-primary, .login-btn, .btn.btn-primary, .auth-form .btn-primary):active { transform: translateY(0) scale(.985); box-shadow: 0 2px 6px rgba(0,80,130,.16) !important; }
+:where(.btn-outline, .btn.btn-outline) { background: #fff !important; color: var(--alembic-blue) !important; border: 1px solid #C8DDE9 !important; }
+:where(.btn-outline, .btn.btn-outline):hover { border-color: var(--alembic-blue) !important; background: var(--alembic-blue-soft) !important; transform: translateY(-1px); }
+:where(.btn-ghost, .btn.btn-ghost):hover { background: var(--alembic-blue-pale) !important; color: var(--alembic-blue-deep) !important; }
+:where(button:disabled, .btn:disabled, .btn[disabled]) { opacity: .55; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+
+/* Shared page shells */
+.app-wrapper { background: var(--color-bg); }
+.main-area { min-width: 0; background: var(--color-bg); }
+.page-content { padding: clamp(18px, 2.5vw, 36px) !important; max-width: 1680px; width: 100%; margin-inline: auto; }
+.page-heading { gap: 12px; }
+.page-title { color: var(--text-primary); font-weight: 750; letter-spacing: -.045em !important; line-height: 1.12; }
+.page-subtitle { color: var(--text-muted); line-height: 1.65; }
+.card, .stat-card, .kpi-card, .content-card, .module-hero, .streak-card, .article-sidebar-card, .mcq-question-card, .mcq-result, .slide-viewer, .module-tab, .auth-card {
+  border: 1px solid rgba(17,64,91,.09) !important; box-shadow: var(--shadow-sm) !important; border-radius: var(--radius-lg) !important;
+}
+.card, .stat-card, .kpi-card, .content-card, .article-sidebar-card, .mcq-question-card, .mcq-result { background: #fff !important; }
+.card-header { border-bottom-color: var(--color-border-light) !important; gap: 12px; }
+.card-title { color: var(--text-primary); font-weight: 700; letter-spacing: -.02em; }
+
+/* Dark navy sidebar makes the user's white MedNeo Learning wordmark readable. */
+.sidebar { background: var(--alembic-blue-deep) !important; border-right: 1px solid rgba(255,255,255,.09) !important; box-shadow: 8px 0 28px rgba(5,49,78,.045); }
+.sidebar-brand { border-bottom-color: rgba(255,255,255,.12) !important; padding: 14px 16px !important; gap: 11px; }
+.sidebar .brand-name, .sidebar .brand-sub, .sidebar .user-name { color: #fff !important; }
+.sidebar .brand-sub { opacity: .68; }
+.sidebar .brand-logo { width: auto !important; height: auto !important; min-width: 42px; margin: 0 !important; }
+.medneo-brand-monogram, .sidebar .brand-logo .medneo-brand-monogram { width: 42px !important; height: 42px !important; display: grid !important; place-items: center; border-radius: 13px !important; background: rgba(255,255,255,.07) !important; border: 1px solid rgba(255,255,255,.72); box-shadow: none !important; color: #fff !important; font-size: 23px !important; font-weight: 800 !important; line-height: 1; }
+.sidebar .user-spec { color: rgba(255,255,255,.63) !important; }
+.sidebar-user { border-bottom-color: rgba(255,255,255,.1) !important; }
+.sidebar .user-avatar { background: var(--alembic-green) !important; color: #fff !important; box-shadow: none !important; }
+.nav-section-label { color: rgba(215,237,248,.58) !important; font-size: .67rem !important; letter-spacing: .12em !important; }
+.sidebar-nav { padding: 12px 10px !important; }
+.sidebar .nav-item { color: rgba(255,255,255,.76) !important; border-radius: 10px !important; margin: 3px 0 !important; min-height: 42px; }
+.sidebar .nav-item .nav-icon { opacity: .85; }
+.sidebar .nav-item:hover { color: #fff !important; background: rgba(255,255,255,.075) !important; transform: translateX(2px); }
+.sidebar .nav-item.active { color: #fff !important; background: rgba(0,162,77,.2) !important; box-shadow: inset 3px 0 var(--alembic-green) !important; }
+.sidebar .nav-item.active .nav-icon { opacity: 1; }
+.sidebar .nav-badge { background: var(--alembic-green) !important; color: #fff !important; border-radius: 20px; }
+.sidebar-footer { border-top: 1px solid rgba(255,255,255,.1) !important; }
+.sidebar .partner-pill { color: rgba(255,255,255,.88) !important; background: rgba(255,255,255,.06) !important; border-color: rgba(255,255,255,.14) !important; }
+.sidebar .partner-dot-medneo { background: var(--alembic-green) !important; }
+.sidebar .partner-dot-bad { background: rgba(255,255,255,.7) !important; }
+
+/* White headers and clean content surfaces */
+.app-header { background: rgba(255,255,255,.94) !important; border-bottom: 1px solid var(--color-border) !important; box-shadow: 0 4px 16px rgba(10,54,79,.035) !important; backdrop-filter: blur(18px); }
+.header-toggle, .header-btn { border-radius: 10px !important; color: var(--text-secondary) !important; }
+.header-toggle:hover, .header-btn:hover { background: var(--alembic-blue-pale) !important; color: var(--alembic-blue) !important; }
+.header-avatar { background: var(--alembic-blue) !important; color: #fff !important; }
+.header-search input, .toolbar-search input { background: #F7FAFC !important; border: 1px solid #E2EBF0 !important; border-radius: 10px !important; }
+.header-search input:focus, .toolbar-search input:focus { background: #fff !important; border-color: var(--alembic-blue) !important; box-shadow: 0 0 0 4px rgba(0,110,182,.09) !important; }
+.medneo-wordmark { color: var(--alembic-blue-deep) !important; background: #fff !important; border-color: rgba(0,110,182,.17) !important; }
+.medneo-wordmark span { color: var(--alembic-green) !important; }
+.partner-badge.medneo, .partner-pill:not(.bad) { border-color: rgba(0,110,182,.16) !important; background: var(--alembic-blue-pale) !important; color: var(--alembic-blue-deep) !important; }
+.partner-badge.bad { border-color: #DCE7ED !important; background: #F5F8FA !important; color: var(--text-secondary) !important; }
+
+/* Stats, dashboard charts, tables, and data surfaces */
+.stat-card, .kpi-card { position: relative; overflow: hidden; }
+.stat-card::before, .kpi-card::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 3px; background: var(--alembic-blue); opacity: .82; }
+.stat-card:nth-child(2)::before, .kpi-card:nth-child(2)::before { background: var(--alembic-green); }
+.stat-icon, .kpi-icon { border-radius: 13px !important; background: var(--alembic-blue-pale) !important; color: var(--alembic-blue) !important; }
+.stat-card:nth-child(2) .stat-icon, .kpi-card:nth-child(2) .kpi-icon { background: var(--alembic-green-pale) !important; color: var(--alembic-green-dark) !important; }
+.stat-value, .kpi-value { color: var(--text-primary) !important; font-variant-numeric: tabular-nums; letter-spacing: -.04em; }
+.stat-label, .kpi-label { color: var(--text-secondary) !important; }
+.stat-change.up, .color-success, .correct { color: var(--alembic-green-dark) !important; }
+.streak-card { background: var(--alembic-blue-deep) !important; color: #fff !important; }
+.streak-card .streak-value, .streak-card .streak-label { color: #fff !important; }
+.data-table-wrap { border-color: var(--color-border) !important; border-radius: 12px; }
+.data-table { border-collapse: separate; border-spacing: 0; }
+.data-table thead th { background: #F4F8FA !important; color: #547080 !important; font-size: .7rem !important; letter-spacing: .055em; text-transform: uppercase; border-bottom: 1px solid var(--color-border) !important; }
+.data-table tbody tr { transition: background-color var(--transition-fast); }
+.data-table tbody tr:hover { background: #F6FAFC !important; }
+.data-table td { border-bottom-color: #EDF2F5 !important; }
+.table-toolbar { border-bottom-color: var(--color-border-light) !important; }
+.field-input, .form-input, input:not([type="checkbox"]):not([type="radio"]), select, textarea { border-color: #D8E4EA; transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast); }
+:where(.field-input, .form-input, input:not([type="checkbox"]):not([type="radio"]), select, textarea):focus { border-color: var(--alembic-blue) !important; box-shadow: 0 0 0 4px rgba(0,110,182,.085) !important; outline: 0; }
+
+/* Doctor learning modules, reading panes, and quiz micro-interactions */
+.module-tabs { gap: 8px; }
+.module-tab { background: #fff !important; border-color: #DFE8EE !important; cursor: pointer; }
+.module-tab:hover { transform: translateY(-2px); border-color: rgba(0,110,182,.35) !important; box-shadow: var(--shadow-md) !important; }
+.module-tab.active { border-color: var(--alembic-blue) !important; background: var(--alembic-blue-pale) !important; box-shadow: inset 0 -3px var(--alembic-blue), var(--shadow-xs) !important; }
+.module-tab.active .module-tab-label { color: var(--alembic-blue-deep) !important; }
+.module-tab-badge { background: var(--alembic-green-pale) !important; color: var(--alembic-green-dark) !important; }
+.module-hero { background: #fff !important; overflow: hidden; }
+.module-hero-tag, .article-category, .portfolio-tag { background: var(--alembic-blue-pale) !important; color: var(--alembic-blue-deep) !important; border-color: transparent !important; }
+.content-card { cursor: pointer; overflow: hidden; }
+.content-card:hover { transform: translateY(-3px); border-color: rgba(0,110,182,.26) !important; box-shadow: var(--shadow-md) !important; }
+.content-card-arrow { color: var(--alembic-blue) !important; transition: transform var(--transition-fast); }
+.content-card:hover .content-card-arrow { transform: translateX(3px); }
+.article-section-heading, .article-title, .slide-title { color: var(--text-primary) !important; letter-spacing: -.025em; }
+.article-highlight { background: var(--alembic-blue-soft) !important; border-left-color: var(--alembic-blue) !important; }
+.takeaway-check { color: var(--alembic-green) !important; }
+.mcq-container, .mcq-question-card { border-radius: 18px !important; }
+.mcq-option { border: 1px solid #DFE8EE !important; border-radius: 12px !important; background: #fff !important; cursor: pointer; }
+.mcq-option:hover { transform: translateY(-1px); border-color: rgba(0,110,182,.45) !important; background: #F7FBFE !important; }
+.mcq-option.selected { background: var(--alembic-blue-pale) !important; border-color: var(--alembic-blue) !important; box-shadow: 0 0 0 2px rgba(0,110,182,.07) !important; }
+.mcq-option.correct { background: var(--alembic-green-pale) !important; border-color: #95D8B1 !important; }
+.mcq-option.incorrect, .mcq-option.wrong { background: #FFF4F2 !important; border-color: #E8B5AB !important; }
+.mcq-explanation { border-radius: 12px !important; background: #F3F9FD !important; border-left: 3px solid var(--alembic-blue) !important; }
+.result-circle { border-color: var(--alembic-blue) !important; }
+.result-pct, .result-circle-text { color: var(--alembic-blue-deep) !important; }
+.result-title { color: var(--text-primary) !important; }
+.slide-viewer-header { background: #F6F9FB !important; }
+.slide-btn:hover, .slide-nav-btns button:hover { background: var(--alembic-blue-pale) !important; color: var(--alembic-blue-deep) !important; }
+
+/* Authentication: keep the page's existing wording, logos are replaced by the white MedNeo Learning wordmark. */
+.auth-body { min-height: 100vh; overflow-x: hidden; background: #F4F8FB !important; }
+.auth-grid { min-height: 100vh; }
+.auth-left { background: var(--alembic-blue-deep) !important; color: #fff; overflow: hidden; }
+.auth-left::before { background: radial-gradient(circle, rgba(0,162,77,.19) 0%, transparent 70%) !important; }
+.auth-left::after { background: radial-gradient(circle, rgba(0,110,182,.24) 0%, transparent 72%) !important; }
+.auth-hero h1 { color: #fff !important; font-weight: 680 !important; letter-spacing: -.045em !important; }
+.auth-hero h1 span:not(:first-child) { color: #9FE5BE !important; }
+.auth-hero p { color: rgba(255,255,255,.8) !important; }
+.auth-bg-art .hex { border-color: rgba(255,255,255,.07) !important; background: rgba(255,255,255,.025) !important; }
+.auth-right { background: #F5F8FB !important; }
+.auth-card { background: #fff !important; border-color: rgba(16,63,91,.09) !important; box-shadow: 0 24px 70px rgba(11,49,73,.10) !important; }
+.auth-tabs { padding: 4px !important; border: 1px solid #E1EAF0; background: #F5F8FA; border-radius: 13px !important; }
+.auth-tabs .tab-btn { min-height: 42px; border-radius: 9px !important; color: var(--text-secondary) !important; font-weight: 650 !important; }
+.auth-tabs .tab-btn:hover { background: #EAF3F8 !important; color: var(--alembic-blue-deep) !important; }
+.auth-tabs .tab-btn.active { background: #fff !important; color: var(--alembic-blue-deep) !important; box-shadow: 0 2px 6px rgba(12,58,84,.08) !important; }
+.auth-form .form-group label, .form-label { color: #304B5C !important; font-weight: 650 !important; }
+.auth-form .input-wrap input, .auth-form input, .form-input { background: #FBFDFE !important; border-radius: 10px !important; min-height: 45px; }
+.auth-form input:focus, .form-input:focus { background: #fff !important; }
+.auth-right-partners { align-items: center; }
+.auth-right-partners img { object-fit: contain; }
+.bad-badge h1 { color: var(--alembic-blue-deep) !important; }
+.auth-Alembic-pill { background: rgba(255,255,255,.06) !important; border-color: rgba(255,255,255,.2) !important; }
+.auth-footer, .auth-legal-footer { color: #7B8D97; }
+.auth-partner-footer { border-top-color: var(--color-border) !important; }
+.auth-partner-footer .journal-name { color: var(--alembic-blue-deep) !important; }
+.toggle-pass:hover, .password-toggle:hover { color: var(--alembic-blue) !important; background: var(--alembic-blue-pale) !important; }
+.accessibility-tools { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; }
+.accessibility-btn { border-radius: 9px !important; border: 1px solid #DFE8EE !important; background: #fff !important; color: var(--text-secondary) !important; }
+.accessibility-btn:hover, .accessibility-btn[aria-pressed="true"] { border-color: var(--alembic-blue) !important; background: var(--alembic-blue-pale) !important; color: var(--alembic-blue-deep) !important; }
+.form-error { color: #B53C3C !important; }
+
+/* MedNeo Learning brand lockup: white version for navy surfaces, color version for white surfaces. */
+.medneo-learning-logo { display: inline-flex; align-items: center; gap: 10px; line-height: 1; max-width: 100%; }
+.medneo-mark { display: grid; place-items: center; width: 38px; height: 38px; flex: 0 0 38px; border-radius: 11px; border: 1.5px solid currentColor; font-size: 21px; font-weight: 820; letter-spacing: -.08em; }
+.medneo-logo-copy { display: flex; flex-direction: column; gap: 3px; }
+.medneo-logo-copy strong { font-size: 1.05rem; line-height: 1; letter-spacing: -.045em; font-weight: 800; }
+.medneo-logo-copy small { font-size: .62rem; line-height: 1.2; font-weight: 650; letter-spacing: .18em; text-transform: uppercase; }
+.medneo-learning-logo--light { color: #fff; }
+.medneo-learning-logo--light .medneo-mark { border-color: rgba(255,255,255,.85); background: rgba(255,255,255,.06); }
+.medneo-learning-logo--light .medneo-logo-copy small { color: rgba(255,255,255,.82); }
+.medneo-learning-logo--color { color: var(--alembic-blue-deep); }
+.medneo-learning-logo--color .medneo-mark { color: var(--alembic-blue); border-color: rgba(0,110,182,.22); background: var(--alembic-blue-pale); }
+.medneo-learning-logo--color .medneo-logo-copy small { color: var(--alembic-green-dark); }
+.auth-stats .medneo-learning-logo { margin: 4px 0 0; }
+.auth-right-partners .medneo-learning-logo { justify-content: center; margin: 8px auto 14px; }
+.sidebar .medneo-logo-copy strong, .sidebar .medneo-logo-copy small { color: #fff !important; }
+.medneo-header-wordmark { display: inline-flex; align-items: baseline; gap: 6px; color: var(--alembic-blue-deep); font-size: .85rem; font-weight: 780; letter-spacing: -.025em; }
+.medneo-header-wordmark span { color: var(--alembic-green-dark); font-size: .72rem; font-weight: 650; letter-spacing: .055em; text-transform: uppercase; }
+
+/* Premium micro-interactions: quick, quiet, and consistent. */
+@keyframes medneoRiseIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes medneoSoftIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes medneoSuccessPulse { 0% { box-shadow: 0 0 0 0 rgba(0,162,77,.2); } 100% { box-shadow: 0 0 0 7px rgba(0,162,77,0); } }
+.auth-card { animation: medneoRiseIn .42s cubic-bezier(.2,.75,.25,1) both; }
+.section.active .page-heading { animation: medneoRiseIn .34s ease-out both; }
+.section.active .card, .section.active .stat-card, .section.active .kpi-card, .section.active .content-card { animation: medneoSoftIn .3s ease-out both; }
+.section.active .stat-card:nth-child(2), .section.active .kpi-card:nth-child(2) { animation-delay: .035s; }
+.section.active .stat-card:nth-child(3), .section.active .kpi-card:nth-child(3) { animation-delay: .07s; }
+.section.active .stat-card:nth-child(4), .section.active .kpi-card:nth-child(4) { animation-delay: .105s; }
+.form-group input:not([type="checkbox"]), .form-group select, .form-input { transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast), transform var(--transition-fast); }
+.form-group input:focus, .form-group select:focus { transform: translateY(-1px); }
+@media (hover:hover) and (pointer:fine) {
+  .card:hover { border-color: rgba(0,110,182,.16) !important; }
+  .stat-card:hover, .kpi-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md) !important; }
+}
+
+/* Reader/viewer containment and prominent navigation controls. */
+#presentationModal .presentation-modal { border: 1px solid var(--color-border) !important; box-shadow: 0 24px 80px rgba(3,37,58,.28) !important; background: #fff !important; }
+#presentationModal .modal-header { background: #fff !important; border-bottom: 1px solid var(--color-border) !important; }
+#presentationModal .presentation-toolbar { background: #F7FAFC !important; }
+#presentationFrameWrap { min-width: 0; min-height: 0; overflow: hidden !important; }
+#presentationMarkRead { background: var(--alembic-green) !important; border-color: var(--alembic-green) !important; color: #fff !important; }
+#presentationMarkRead:hover { background: var(--alembic-green-dark) !important; transform: translateY(-1px); }
+#presentationDownload { background: var(--alembic-blue-pale) !important; border: 1px solid rgba(0,110,182,.2) !important; color: var(--alembic-blue-deep) !important; }
+#presentationDownload:hover { background: #DCEFFA !important; }
+
+/* Responsive grids and controls */
+@media (max-width: 980px) {
+  .page-content { padding: 20px !important; }
+  .dashboard-grid, .admin-grid-3, .admin-grid { grid-template-columns: minmax(0,1fr) !important; }
+  .sidebar { box-shadow: 8px 0 28px rgba(5,49,78,.08); }
+}
+@media (max-width: 768px) {
+  .page-content { padding: 16px !important; }
+  .stat-grid, .kpi-grid { grid-template-columns: repeat(2,minmax(0,1fr)) !important; gap: 12px !important; }
+  .page-heading { align-items: flex-start; flex-wrap: wrap; }
+  .header-search { max-width: 40vw; }
+  .auth-grid { grid-template-columns: minmax(0,1fr) !important; }
+  .auth-left { min-height: auto; padding: 24px !important; }
+  .auth-left .auth-hero { padding: 25px 0; }
+  .auth-left .auth-bg-art { opacity: .45; }
+  .auth-right { padding: 22px 16px 28px !important; }
+  .auth-card { max-width: 640px; margin: 0 auto; }
+}
+@media (max-width: 500px) {
+  .page-content { padding: 12px !important; }
+  .stat-grid, .kpi-grid { gap: 9px !important; }
+  .stat-card, .kpi-card { padding: 13px !important; }
+  .stat-value, .kpi-value { font-size: clamp(1.35rem,7vw,1.8rem) !important; }
+  .app-header { gap: 8px; padding-inline: 10px !important; }
+  .header-right { gap: 6px; }
+  .header-search { display: none !important; }
+  .medneo-header-wordmark { display: none; }
+  .auth-right { padding: 15px 12px 24px !important; }
+  .auth-card { padding: 18px !important; }
+  .auth-tabs .tab-btn { padding: 9px 5px !important; font-size: .75rem !important; }
+  .register-form-grid { grid-template-columns: minmax(0,1fr) !important; }
+  .register-span-2 { grid-column: auto !important; }
+  .auth-partner-footer { grid-template-columns: minmax(0,1fr) minmax(0,1fr) !important; }
+  .auth-partner-footer > :first-child { grid-column: 1 / -1; text-align: center; }
+  .data-table-wrap { max-width: calc(100vw - 32px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
+
+
+.auth-right-partners::before {
+  display: none !important;
+}

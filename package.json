@@ -1,0 +1,16 @@
+{
+  "name": "medneo-server-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "check": "node scripts/check-project.mjs",
+    "seed": "node scripts/seed.mjs",
+    "backup:before-migration": "node scripts/backup-before-migration.mjs",
+    "start": "node server.mjs",
+    "dev": "node --watch server.mjs"
+  }
+}

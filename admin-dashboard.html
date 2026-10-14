@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MedNeo Learning — Admin</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/admin.css">
+
+  <style id="medneo-admin-polish">
+    html,body{min-height:100%;max-width:100%;overflow-x:hidden}
+    .app-wrapper{min-height:100dvh;overflow-x:clip}
+    .main-area{min-width:0;max-width:100%;overflow-x:clip}
+    .page-content{width:100%;max-width:1560px;margin-inline:auto;padding:clamp(16px,2.25vw,34px);box-sizing:border-box}
+    .page-heading{margin-bottom:clamp(16px,2vw,28px)}
+    .page-title{letter-spacing:-.035em}
+    .card,.stat-card,.module-hero{box-shadow:0 8px 28px rgba(25,40,60,.045);border-color:rgba(26,43,64,.09)}
+    .card{min-width:0}
+    .data-table-wrap{max-width:100%;overflow:auto;overscroll-behavior-inline:contain}
+    table.data-table{min-width:720px}
+    .nav-item,.btn,.field-input,select,textarea{transition:background-color .16s ease,border-color .16s ease,box-shadow .16s ease,transform .16s ease}
+    .btn:focus-visible,.nav-item:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid rgba(0,119,181,.34);outline-offset:2px}
+    #modulesAdminGrid{align-items:stretch}
+    #modulesAdminGrid>.card{height:100%;display:flex;flex-direction:column}
+    #modulesAdminGrid .field-help{line-height:1.55;overflow-wrap:anywhere}
+    #modulesAdminGrid textarea{max-height:340px;resize:vertical}
+    @media(max-width:820px){.sidebar{z-index:60}.page-content{padding:16px}.stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:480px){.page-content{padding:12px}.stat-grid{gap:10px}.stat-card{padding:14px;min-width:0}.stat-value{font-size:1.5rem}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+  </style>
+
+  <link rel="stylesheet" href="css/medneo-refined.css">
+</head>
+<body>
+
+<div class="app-wrapper">
+
+<!-- ════════════════════════════════════════
+     SIDEBAR
+     ════════════════════════════════════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-logo">
+<span class="medneo-brand-monogram" aria-hidden="true">M</span>
+    </div>
+    <div class="brand-text">
+      <div class="brand-name">MedNeo Learning</div>
+      <div class="brand-sub">Admin Console</div>
+    </div>
+  </div>
+
+  <div class="sidebar-user">
+    <div class="user-avatar">SA</div>
+    <div class="user-info">
+      <div class="user-name" id="sidebarUserName">Super Admin</div>
+      <div class="user-spec" id="sidebarUserSpec">Administrator</div>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Platform</div>
+    <div class="nav-item active" data-section="overview">
+      <div class="nav-icon">⊞</div>
+      <span class="nav-label">Overview</span>
+    </div>
+    <div class="nav-item" data-section="analytics">
+      <div class="nav-icon">📊</div>
+      <span class="nav-label">Analytics</span>
+    </div>
+    <div class="nav-section-label">Management</div>
+    <div class="nav-item" data-section="users">
+      <div class="nav-icon">👥</div>
+      <span class="nav-label">Doctors</span>
+    </div>
+    <div class="nav-item" data-section="modules">
+      <div class="nav-icon">📚</div>
+      <span class="nav-label">Modules</span>
+    </div>
+    <div class="nav-section-label">System</div>
+    <div class="nav-item" data-section="logs">
+      <div class="nav-icon">📋</div>
+      <span class="nav-label">Activity Logs</span>
+    </div>
+    <div class="nav-item" id="logoutBtn">
+      <div class="nav-icon">↩</div>
+      <span class="nav-label">Sign Out</span>
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="partner-logos">
+      <div class="partner-pill"><div class="partner-dot-medneo"></div>MEDNEO</div>
+      <div class="partner-pill"><div class="partner-dot-bad"></div>BAD</div>
+    </div>
+  </div>
+</aside>
+
+<!-- ════════════════════════════════════════
+     MAIN
+     ════════════════════════════════════════ -->
+<div class="main-area" id="mainArea">
+
+  <!-- Header -->
+  <header class="app-header" id="appHeader">
+    <button class="header-toggle" id="sidebarToggle">☰</button>
+    <img class="alembic-header-logo" src="./img/alembic-logo.png" alt="Alembic" />
+    <div class="header-spacer"></div>
+    <div class="header-right">
+      <div class="partner-badge medneo" style="display:flex;align-items:center;gap:6px;padding:4px 10px;border-radius:var(--radius-sm);border:1px solid #FFCDD2;background:#FFF0F0;font-size:0.68rem;font-weight:700;color:#D62B2B">MEDNEO</div>
+      <div class="partner-badge bad" style="display:flex;align-items:center;gap:6px;padding:4px 10px;border-radius:var(--radius-sm);border:1px solid #C5CAE9;background:#EEF0F7;font-size:0.68rem;font-weight:700;color:#1B2A5E">BAD</div>
+      <div class="header-btn">🔔<div class="header-notif-dot"></div></div>
+      <div class="header-avatar">SA</div>
+    </div>
+  </header>
+
+  <main class="page-content">
+
+    <!-- ══════════════════════════════
+         OVERVIEW
+         ══════════════════════════════ -->
+    <section class="section active" id="sec-overview">
+      <div class="page-heading" style="display:flex;align-items:flex-start;justify-content:space-between">
+        <div>
+          <h1 class="page-title">Command Centre</h1>
+          <p class="page-subtitle" id="currentDate"></p>
+        </div>
+        <button class="btn btn-primary" onclick="openInviteModal()">+ Invite Doctor</button>
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-icon">👥</div>
+          <div class="kpi-label">Total Doctors</div>
+          <div class="kpi-value" id="kpiUsers">0</div>
+          <div class="kpi-sub">Registered physicians</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">✅</div>
+          <div class="kpi-label">Active Today</div>
+          <div class="kpi-value" id="kpiActive">0</div>
+          <div class="kpi-sub">Doctors with recorded activity today</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">📚</div>
+          <div class="kpi-label">Modules</div>
+          <div class="kpi-value" id="kpiModules">0</div>
+          <div class="kpi-sub" id="kpiModulesSub">Published modules</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">🎯</div>
+          <div class="kpi-label">Completion Rate</div>
+          <div class="kpi-value" id="kpiCompletion">—</div>
+          <div class="kpi-sub" id="kpiCompletionSub">No article completion data yet</div>
+        </div>
+      </div>
+
+      <!-- Row: Chart + Online + ModPerf -->
+      <div class="admin-grid-3">
+        <!-- Registrations chart -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Registrations (last 14 days)</span>
+          </div>
+          <div class="card-body">
+            <div class="mini-chart-wrap" id="regChart" style="height:80px"></div>
+          </div>
+        </div>
+        <!-- Online users -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Online Now</span>
+          </div>
+          <div class="card-body" style="padding-top:var(--space-sm)">
+            <div class="online-list" id="onlineList"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Module performance -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Module Performance</span>
+        </div>
+        <div class="card-body" style="padding-top:var(--space-sm)">
+          <div class="mod-perf-list" id="modPerfList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════
+         ANALYTICS
+         ══════════════════════════════ -->
+    <section class="section" id="sec-analytics">
+      <div class="page-heading" style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap">
+        <div>
+          <h1 class="page-title">Live Analytics</h1>
+          <p class="page-subtitle">Live activity from recorded doctor sessions — empty metrics mean no events have been recorded yet.</p>
+          <p class="page-subtitle" id="analyticsUpdatedAt" aria-live="polite">Waiting for first data refresh…</p>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <button class="btn btn-outline" onclick="refreshAnalyticsNow()">↻ Refresh</button>
+          <button class="btn btn-outline" onclick="exportAdminData('all','csv')">Export CSV</button>
+          <button class="btn btn-outline" onclick="exportAdminData('all','json')">Export JSON</button>
+          <button class="btn btn-outline" onclick="exportAdminData('all','xls')">Excel export</button>
+          <button class="btn btn-primary" onclick="runDatabaseBackup()">Create backup</button>
+        </div>
+      </div>
+
+      <div id="analyticsSummary" class="kpi-grid" style="margin-bottom:var(--space-lg)"></div>
+
+      <div class="card" style="margin-bottom:var(--space-lg)">
+        <div class="card-header"><span class="card-title">Daily active doctors · last 14 days</span></div>
+        <div class="card-body">
+          <div class="mini-chart-wrap" id="dauChart" style="height:100px"></div>
+          <div id="dauEmpty" class="analytics-empty" hidden>No usage events recorded for this period yet.</div>
+        </div>
+      </div>
+
+      <div class="admin-grid">
+        <div class="card">
+          <div class="card-header"><span class="card-title">Device and browser distribution</span></div>
+          <div class="card-body"><div class="device-list" id="deviceList"></div></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">Learning funnel</span></div>
+          <div class="card-body"><div class="funnel-list" id="funnelList"></div></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:var(--space-lg)">
+        <div class="card-header"><span class="card-title">Most viewed pages</span><button class="btn btn-ghost" onclick="exportAdminData('events','csv')">Export events</button></div>
+        <div class="card-body"><div class="data-table-wrap">
+          <table class="data-table"><thead><tr><th>Page / Route</th><th>Recorded events</th></tr></thead><tbody id="navPathsTableBody"></tbody></table>
+        </div></div>
+      </div>
+
+      <div class="card" style="margin-top:var(--space-lg)">
+        <div class="card-header"><span class="card-title">Content and advertisement engagement</span></div>
+        <div class="card-body"><div class="data-table-wrap">
+          <table class="data-table"><thead><tr><th>Type</th><th>Content / Ad ID</th><th>Clicks / opens</th><th>Last activity</th></tr></thead><tbody id="topContentTableBody"></tbody></table>
+        </div></div>
+      </div>
+
+      <div class="card" style="margin-top:var(--space-lg)">
+        <div class="card-header"><span class="card-title">Assessment attempts and answers</span><button class="btn btn-ghost" onclick="exportAdminData('quiz-attempts','csv')">Export attempts</button></div>
+        <div class="card-body"><div class="data-table-wrap">
+          <table class="data-table"><thead><tr><th>Submitted</th><th>Doctor</th><th>Assessment</th><th>Score</th><th>Duration</th><th>Answers</th></tr></thead><tbody id="quizAttemptsTableBody"></tbody></table>
+        </div><div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;flex-wrap:wrap"><span id="attemptsLoadedLabel" class="page-info">Showing newest attempts first</span><button id="loadMoreAttemptsBtn" class="btn btn-outline" onclick="loadMoreQuizAttempts()" hidden>Load older attempts</button></div></div>
+      </div>
+      <div class="card" style="margin-top:var(--space-lg)">
+        <div class="card-header"><span class="card-title">Individual question-answer events</span><button class="btn btn-ghost" onclick="exportAdminData('question-answers','csv')">Export all answers</button></div>
+        <div class="card-body">
+          <p class="page-subtitle">Each option selected is saved as the doctor answers, including if the doctor leaves before submitting the full quiz.</p>
+          <div class="data-table-wrap"><table class="data-table"><thead><tr><th>Answered</th><th>Doctor</th><th>Module / quiz</th><th>Question</th><th>Available options</th><th>Doctor selected</th><th>Correct answer</th><th>Result</th><th>Device</th></tr></thead><tbody id="questionAnswerEventsTableBody"></tbody></table></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;flex-wrap:wrap"><span id="questionAnswerEventsLoadedLabel" class="page-info">Latest recorded answers</span><button id="loadMoreQuestionAnswersBtn" class="btn btn-outline" onclick="loadMoreQuestionAnswerEvents()" hidden>Load older answers</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════
+         DOCTORS / USERS
+         ══════════════════════════════ -->
+    <section class="section" id="sec-users">
+      <div class="page-heading" style="display:flex;align-items:flex-start;justify-content:space-between">
+        <div>
+          <h1 class="page-title">Doctors</h1>
+          <p class="page-subtitle">Manage registered physicians and access</p>
+        </div>
+        <button class="btn btn-primary" onclick="openInviteModal()">+ Invite Doctor</button>
+      </div>
+
+      <div style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);overflow:hidden">
+        <!-- Toolbar -->
+        <div class="table-toolbar">
+          <div class="toolbar-search">
+            <span class="toolbar-search-icon">🔍</span>
+            <input type="text" id="userSearchInput" placeholder="Search by name, email or specialisation…">
+          </div>
+          <div class="toolbar-spacer"></div>
+          <span class="page-info" id="pageInfo"></span>
+        </div>
+
+        <!-- Table -->
+        <div class="data-table-wrap" style="border:none;border-radius:0">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Doctor</th>
+                <th>Specialisation</th>
+                <th>Location</th>
+                <th>Status</th>
+                <th>Score</th>
+                <th>Last Active</th>
+                <th>Access</th>
+              </tr>
+            </thead>
+            <tbody id="usersTableBody"></tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+          <span class="page-info" id="pageInfoBottom"></span>
+          <div id="paginationBtns" style="display:flex;gap:4px"></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:var(--space-lg)">
+        <div class="card-header"><span class="card-title">Registration archive</span><button class="btn btn-ghost" onclick="exportAdminData('registrations','csv')">Export registrations</button></div>
+        <div class="card-body"><p class="page-subtitle">Append-only profile snapshots captured by a database trigger whenever a doctor account is created. Passwords and password hashes are never included.</p><div class="data-table-wrap"><table class="data-table"><thead><tr><th>Registered</th><th>Doctor</th><th>Email</th><th>Mobile</th><th>Degree</th><th>Location</th><th>Archive</th></tr></thead><tbody id="registrationArchiveTableBody"></tbody></table></div></div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════
+         MODULES (CMS)
+         ══════════════════════════════ -->
+    <section class="section" id="sec-modules">
+      <div class="page-heading">
+        <h1 class="page-title">Content Modules</h1>
+        <p class="page-subtitle">Overview of all learning modules on the platform</p>
+      </div>
+      <p class="page-subtitle" style="margin-bottom:var(--space-md)">Upload a searchable PDF for each published module. Files are stored in private Supabase Storage and opened in the built-in MedNeo reader.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--space-md)" id="modulesAdminGrid">
+        <!-- Populated from live Supabase content and module_files -->
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════
+         ACTIVITY LOGS
+         ══════════════════════════════ -->
+    <section class="section" id="sec-logs">
+      <div class="page-heading">
+        <h1 class="page-title">Activity Logs</h1>
+        <p class="page-subtitle">Real-time platform events and user actions</p>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden">
+        <div class="data-table-wrap" style="border:none;border-radius:0">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>User</th>
+                <th>Event</th>
+                <th>Module</th>
+                <th>Device</th>
+              </tr>
+            </thead>
+            <tbody id="logsTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+</div>
+
+<!-- ════════════════════
+     INVITE MODAL
+     ════════════════════ -->
+<div class="modal-overlay" id="inviteModal">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-header">
+      <span class="modal-title">Invite Doctor</span>
+      <div class="modal-close" onclick="closeModal('inviteModal')">✕</div>
+    </div>
+    <div class="modal-body">
+      <div class="field-group">
+        <label class="field-label">Full Name</label>
+        <input class="field-input" id="inviteName" type="text" placeholder="Dr. First Last">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Email Address</label>
+        <input class="field-input" id="inviteEmail" type="email" placeholder="doctor@hospital.com">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Mobile number *</label>
+        <input class="field-input" id="invitePhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+91 98765 43210" required>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Medical degree</label>
+        <input class="field-input" id="inviteDegree" type="text" placeholder="MBBS, MD Dermatology">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Specialisation</label>
+        <input class="field-input" id="inviteSpec" type="text" placeholder="Dermatology">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Hospital / Clinic</label>
+        <input class="field-input" id="inviteHospital" type="text" placeholder="Hospital or clinic (optional)">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Medical registration number</label>
+        <input class="field-input" id="inviteRegistrationNumber" type="text" placeholder="Registration ID (optional)">
+      </div>
+      <div class="field-group">
+        <label class="field-label">City</label>
+        <input class="field-input" id="inviteCity" type="text" placeholder="Mumbai">
+      </div>
+      <div class="field-group">
+        <label class="field-label">State</label>
+        <input class="field-input" id="inviteState" type="text" placeholder="Maharashtra">
+      </div>
+      <div style="display:flex;gap:var(--space-sm);justify-content:flex-end;margin-top:var(--space-lg)">
+        <button class="btn btn-ghost" onclick="closeModal('inviteModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="submitInvite()">Send Invitation</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="quizAttemptModal">
+  <div class="modal" style="max-width:760px;max-height:85vh;overflow:auto">
+    <div class="modal-header"><span class="modal-title" id="quizAttemptModalTitle">Assessment attempt</span><button class="modal-close" onclick="closeModal('quizAttemptModal')" aria-label="Close">✕</button></div>
+    <div class="modal-body" id="quizAttemptModalBody"></div>
+  </div>
+</div>
+<div id="toastContainer"></div>
+
+<script src="js/data.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/admin.js"></script>
+
+</body>
+</html>
